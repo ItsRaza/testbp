@@ -1,30 +1,36 @@
 default_context:
-  project_name: 'raza'
-  project_slug: 'raza'
-  domain_main: 'raza.com'
-  domain_staging: 'stag.raza.com'
-  docker_swarm_stack_name_main: 'raza-com'
-  docker_swarm_stack_name_staging: 'stag-raza-com'
-  secret_key: 'qazwsxedcrfvtgbbbgtvfrcdewzzaq'
-  first_superuser: 'admin@raza.com'
-  first_superuser_password: 'Map.123'
+  project_name: "raza"
+  project_slug: "raza"
+  domain_main: "raza.com"
+  domain_staging: "stag.raza.com"
+  docker_swarm_stack_name_main: "raza-com"
+  docker_swarm_stack_name_staging: "stag-raza-com"
+  secret_key: "qazwsxedcrfvtgbbbgtvfrcdewzzaq"
+  first_superuser: "admin@raza.com"
+  first_superuser_password: "Map.123"
   backend_cors_origins: '["http://localhost", "http://localhost:4200", "http://localhost:3000", "http://localhost:8080", "https://localhost", "https://localhost:4200", "https://localhost:3000", "https://localhost:8080", "http://dev.raza.com", "https://stag.raza.com", "https://raza.com", "http://local.dockertoolbox.tiangolo.com", "http://localhost.tiangolo.com"]'
-  smtp_port: '587'
-  smtp_host: ''
-  smtp_user: ''
-  smtp_password: ''
-  smtp_emails_from_email: 'info@raza.com'
-  postgres_password: 'Map.123'
-  pgadmin_default_user: 'admin@raza.com'
-  pgadmin_default_user_password: 'Map.123'
-  traefik_constraint_tag: 'raza.com'
-  traefik_constraint_tag_staging: 'stag.raza.com'
-  traefik_public_constraint_tag: 'traefik-public'
-  flower_auth: 'admin:Map.123'
-  sentry_dsn: ''
-  docker_image_prefix: ''
-  docker_image_backend: 'backend'
-  docker_image_celeryworker: 'celeryworker'
-  docker_image_frontend: 'frontend'
-  _copy_without_render: [frontend/src/**/*.html, frontend/src/**/*.vue, frontend/node_modules/*, backend/app/app/email-templates/**]
+  smtp_port: "587"
+  smtp_host: "smtp.gmail.com"
+  smtp_user: "syed zaidi"
+  smtp_password: "watchmanlala110786"
+  smtp_emails_from_email: "syedzaidi7684@gmail.com"
+  postgres_password: "Map.123"
+  pgadmin_default_user: "admin@raza.com"
+  pgadmin_default_user_password: "Map.123"
+  traefik_constraint_tag: "raza.com"
+  traefik_constraint_tag_staging: "stag.raza.com"
+  traefik_public_constraint_tag: "traefik-public"
+  flower_auth: "admin:Map.123"
+  sentry_dsn: ""
+  docker_image_prefix: ""
+  docker_image_backend: "backend"
+  docker_image_celeryworker: "celeryworker"
+  docker_image_frontend: "frontend"
+  _copy_without_render:
+    [
+      frontend/src/**/*.html,
+      frontend/src/**/*.vue,
+      frontend/node_modules/*,
+      backend/app/app/email-templates/**,
+    ]
   _template: ./
