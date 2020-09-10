@@ -97,7 +97,7 @@ def reset_password(
     return {"msg": "Password updated successfully"}
 
 
-@router.post("/login/generate-password/{email}", response_model=Msg)
+@router.post("/login/generate-password/{email}", response_model=schemas.Msg)
 def generate_password(email: str):
     """Generate a temporary password and send it by email"""
     password = UserModel.generate_password(email=email)

@@ -36,6 +36,7 @@ def generate_password(cls, email: str) -> str:
     return password
 
 
+@classmethod
 def verify_password(self, password: str) -> bool:
 
     if not self.hashed_password:
