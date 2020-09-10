@@ -8,6 +8,7 @@ from emails.template import JinjaTemplate
 from jose import jwt
 
 from app.core.config import settings
+from app.core import config2
 
 
 def send_email(
@@ -104,3 +105,24 @@ def verify_password_reset_token(token: str) -> Optional[str]:
         return decoded_token["email"]
     except jwt.JWTError:
         return None
+
+
+def send_generate_password_email(email_to: str, email: str, password: str):
+    """Send a temporary password by email with a magic link to login"""
+    project_name = config2.PROJECT_NAME
+    subject = f"{project_name} - Magic link for user {email}"
+    with open(Path(config2.EMAIL_TEMPLATES_DIR) / "generate_password.html") as f:
+        template_str = f.read()
+    server_host = config2.FRONTEND_HOST + config2.FRONTEND_MAGICLINK_URL
+    send_email(
+        email_to=email_to,
+        subject_template=subject,
+        html_template=template_str,
+        environment={
+            "project_name": config2.PROJECT_NAME,
+            "username": email,
+            "email": email_to,
+            "valid_hours": config2.EMAIL_RESET_TOKEN_EXPIRE_HOURS,
+            "link": server_host.format(token=password),
+        },
+    )
