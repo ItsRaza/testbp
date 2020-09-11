@@ -8,6 +8,23 @@ from emails.template import JinjaTemplate
 from jose import jwt
 
 from app.core.config import settings
+from app.core.security import get_password_hash
+
+
+def generate_password(user, email: str) -> str:
+
+    if not user:
+        return None
+
+    if user.password_set:
+        return None
+
+    user.login_retry = 0
+    user.password_expire = datetime.now() + timedelta(hours=1)
+    password = random_n_words()
+    hashed_password = get_password_hash(new_password)
+    user.hashed_password = hashed_password
+    return password
 
 
 def send_email(

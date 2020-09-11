@@ -20,23 +20,6 @@ class User(Base):
 
 
 @classmethod
-def generate_password(cls, email: str) -> str:
-    user = cls.get(email=email)
-
-    if not user:
-        return None
-
-    if user.password_set:
-        return None
-
-    user.login_retry = 0
-    user.password_expire = datetime.now() + timedelta(hours=1)
-    password = random_n_words()
-    user.hashed_password = pwd_context.hash(password)
-    return password
-
-
-@classmethod
 def verify_password(self, password: str) -> bool:
 
     if not self.hashed_password:
