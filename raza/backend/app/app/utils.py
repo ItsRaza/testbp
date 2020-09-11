@@ -11,22 +11,6 @@ from app.core.config import settings
 from app.core.security import get_password_hash
 
 
-def generate_password(user, email: str) -> str:
-
-    if not user:
-        return None
-
-    if user.password_set:
-        return None
-
-    user.login_retry = 0
-    user.password_expire = datetime.now() + timedelta(hours=1)
-    password = random_n_words()
-    hashed_password = get_password_hash(new_password)
-    user.hashed_password = hashed_password
-    return password
-
-
 def send_email(
     email_to: str,
     subject_template: str = "",
@@ -123,21 +107,38 @@ def verify_password_reset_token(token: str) -> Optional[str]:
         return None
 
 
-def send_generate_password_email(email_to: str, email: str, password: str):
+def send_generate_password_email(email_to: str, password: str):
     """Send a temporary password by email with a magic link to login"""
 
-    subject = f" - Magic link for user {email}"
-    with open(Path(config.EMAIL_TEMPLATES_DIR) / "generate_password.html") as f:
-        template_str = f.read()
-    server_host = config.SERVER_HOST + config.MAGICLINK_URL
+    subject = f"{project_name} - Magic link"
+    # with open(Path(settings.EMAIL_TEMPLATES_DIR) / "new_account.html") as f:
+    #     template_str = f.read()
+    link = settings.SERVER_HOST
     send_email(
         email_to=email_to,
         subject_template=subject,
-        html_template=template_str,
+        # html_template=template_str,
         environment={
-            "username": email,
+            "project_name": settings.PROJECT_NAME,
+            "username": "username",
+            "password": password,
             "email": email_to,
-            "valid_hours": config.ACCESS_TOKEN_EXPIRE_MINUTES,
-            "link": server_host.format(token=password),
+            "link": link,
         },
     )
+
+    # subject = f" - Magic link for user {email}"
+    # with open(Path(config.EMAIL_TEMPLATES_DIR) / "generate_password.html") as f:
+    #     template_str = f.read()
+    # server_host = config.SERVER_HOST + config.MAGICLINK_URL
+    # send_email(
+    #     email_to=email_to,
+    #     subject_template=subject,
+    #     html_template=template_str,
+    #     environment={
+    #         "username": email,
+    #         "email": email_to,
+    #         "valid_hours": config.ACCESS_TOKEN_EXPIRE_MINUTES,
+    #         "link": server_host.format(token=password),
+    #     },
+    # )

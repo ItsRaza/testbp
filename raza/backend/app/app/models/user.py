@@ -18,14 +18,27 @@ class User(Base):
     is_superuser = Column(Boolean(), default=False)
     items = relationship("Item", back_populates="owner")
 
+    def generate_password(cls, email: str) -> str:
+        user = cls.get(email=email)
+        print("ok")
+        if not user:
+            return None
 
-@classmethod
-def verify_password(self, password: str) -> bool:
+        if user.password_set:
+            return None
 
-    if not self.hashed_password:
-        return False
+        user.login_retry = 0
+        user.password_expire = datetime.now() + timedelta(hours=1)
+        password = random_n_words()
+        user.hashed_password = pwd_context.hash(password)
+        return password
 
-    if self.password_expire and self.password_expire < datetime.now():
-        return False
+    def verify_password(self, password: str) -> bool:
 
-    return pwd_context.verify(password, self.hashed_password)
+        if not self.hashed_password:
+            return False
+
+        if self.password_expire and self.password_expire < datetime.now():
+            return False
+
+        return pwd_context.verify(password, self.hashed_password)

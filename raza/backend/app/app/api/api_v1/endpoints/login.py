@@ -15,7 +15,7 @@ from app.utils import (
     send_reset_password_email,
     verify_password_reset_token,
     send_generate_password_email,
-    generate_password,
+
 )
 
 router = APIRouter()
@@ -101,12 +101,13 @@ def reset_password(
 @router.post("/login/generate-password/{email}", response_model=schemas.Msg)
 def generate_password(email: str):
     """Generate a temporary password and send it by email"""
-    user = crud.user.get_by_email(db, email=email)
-    password = generate_password(user, email)
+
+    password = security.create_access_token(
+        email, timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
 
     if password:
         send_generate_password_email(
-            email_to=email, email=email, password=password
+            email_to=email, password=password
         )
 
-    return {"msg": "If this email is valid you will receive a magic link shortly."}
+    return {"msg": "Check your Email"}
