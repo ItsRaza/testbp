@@ -109,15 +109,15 @@ def verify_password_reset_token(token: str) -> Optional[str]:
 
 def send_generate_password_email(email_to: str, password: str):
     """Send a temporary password by email with a magic link to login"""
-
+    project_name = settings.PROJECT_NAME
     subject = f"{project_name} - Magic link"
     # with open(Path(settings.EMAIL_TEMPLATES_DIR) / "new_account.html") as f:
-    #     template_str = f.read()
+    template_str = "<p> {password} </p>"
     link = settings.SERVER_HOST
     send_email(
         email_to=email_to,
         subject_template=subject,
-        # html_template=template_str,
+        html_template=template_str,
         environment={
             "project_name": settings.PROJECT_NAME,
             "username": "username",
